@@ -8,7 +8,7 @@ export default function EditScreen({ route }) {
   const navigation = useNavigation();
   const [image, setImage] = useState("../assets/cards/card-1.png");
 
-  const { item, cards, setCards } = route.params;
+  const { item, showCards, setShowCards } = route.params;
   // Data
   const [cardTitle, setCardTitle] = useState(item.title);
   const [cardDescription, setCardDescription] = useState(item.description);
@@ -40,14 +40,12 @@ export default function EditScreen({ route }) {
           />
         </View>
 
-        <ImgPicker image={image} setImage={setImage} />
-
         <Pressable
           onPress={() =>
             editThisCard(
               navigation,
-              cards,
-              setCards,
+              showCards,
+              setShowCards,
               cardTitle,
               cardDescription,
               item
@@ -63,27 +61,27 @@ export default function EditScreen({ route }) {
 
 const editThisCard = (
   navigation,
-  cards,
-  setCards,
+  showCards,
+  setShowCards,
   cardTitle,
   cardDescription,
   item
 ) => {
-  const newCards = cards.map((card, i) => {
+  const newCards = showCards.map((card) => {
     if (card.id === item.id) {
       return {
         title: cardTitle,
         description: cardDescription,
         img: card.img,
         id: card.id,
-        testimonial: card.testimonial,
+        testimonials: card.testimonials,
       };
     } else {
       return card;
     }
   });
 
-  setCards(newCards);
+  setShowCards(newCards);
 
   navigation.goBack();
 };

@@ -7,7 +7,7 @@ import { styles } from "../Style/General";
 export default function CreateTestimonialScreen({ route }) {
   const navigation = useNavigation();
 
-  const { item, cards, setCards } = route.params;
+  const { item, showCards, setShowCards } = route.params;
 
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
@@ -51,8 +51,8 @@ export default function CreateTestimonialScreen({ route }) {
           onPress={() =>
             postNewComment(
               navigation,
-              cards,
-              setCards,
+              showCards,
+              setShowCards,
               author,
               description,
               item,
@@ -69,8 +69,8 @@ export default function CreateTestimonialScreen({ route }) {
 
 const postNewComment = (
   navigation,
-  cards,
-  setCards,
+  showCards,
+  setShowCards,
   author,
   description,
   item,
@@ -78,7 +78,7 @@ const postNewComment = (
 ) => {
   const comment = { author, quote: description, score: rating | 1 };
 
-  const newCards = cards.map((card) => {
+  const newCards = showCards.map((card) => {
     if (card.id === item.id) {
       return {
         title: card.title,
@@ -92,7 +92,7 @@ const postNewComment = (
     }
   });
 
-  setCards(newCards);
+  setShowCards(newCards);
 
   navigation.popTo("HomeScreen");
 };

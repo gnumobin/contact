@@ -9,8 +9,10 @@ import { styles } from "../Style/General";
 export default function Product({ route }) {
   const navigation = useNavigation();
 
-  const { item, cards, setCards } = route.params;
+  const { item, showCards, setShowCards } = route.params;
   const { title, description, img, testimonials } = item;
+
+  const destImage = !img.toString().includes("file") ? img : { uri: img };
 
   const [scores, setScores] = useState(testimonials.map((i) => i.score));
 
@@ -24,14 +26,18 @@ export default function Product({ route }) {
       <Pressable
         style={styles.newComment}
         onPress={() =>
-          navigation.navigate("commentScreen", { item, cards, setCards })
+          navigation.navigate("commentScreen", {
+            item,
+            showCards,
+            setShowCards,
+          })
         }
       >
         <Icon name="plus" size={32} color="#f8f9fa" />
       </Pressable>
 
       <View style={styles.imageBox}>
-        <Image source={img} style={styles.image} />
+        <Image source={destImage} style={styles.image} />
       </View>
       <View style={styles.contentBox}>
         <Text style={styles.heading}>{title}</Text>

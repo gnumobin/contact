@@ -4,13 +4,15 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ImgPicker from "../components/ImgPicker";
 import { styles } from "../Style/General";
+import { primaryData } from "../data";
 
 export default function NewScreen({ route }) {
   const navigation = useNavigation();
 
-  const [image, setImage] = useState("../assets/cards/card-1.png");
+  const [image, setImage] = useState("");
+  const [destImage, setDestImage] = useState("");
 
-  const { cards, setCards } = route.params;
+  const { showCards, setShowCards } = route.params;
   // Data
   const [cardTitle, setCardTitle] = useState();
   const [cardDescription, setCardDescription] = useState();
@@ -42,16 +44,22 @@ export default function NewScreen({ route }) {
           />
         </View>
 
-        <ImgPicker image={image} setImage={setImage} />
+        <ImgPicker
+          image={image}
+          setImage={setImage}
+          setDestImage={setDestImage}
+          destImage={destImage}
+        />
 
         <Pressable
           onPress={() =>
             createNewCard(
               navigation,
-              cards,
-              setCards,
+              showCards,
+              setShowCards,
               cardTitle,
-              cardDescription
+              cardDescription,
+              destImage
             )
           }
         >
@@ -77,23 +85,27 @@ export default function NewScreen({ route }) {
 
 const createNewCard = (
   navigation,
-  cards,
-  setCards,
+  showCards,
+  setShowCards,
   cardTitle,
-  cardDescription
+  cardDescription,
+  destImage
 ) => {
   const createID = Math.random();
 
-  // const img = require(image + '')
+  console.log(destImage);
+
   const newCard = {
     title: cardTitle,
     description: cardDescription,
-    img: "",
+    img: destImage,
     id: createID,
-    testimonial: [],
+    testimonials: [],
   };
 
-  setCards([...cards, newCard]);
+  setShowCards([...showCards, newCard]);
+
+  primaryData.push(newCard);
 
   navigation.goBack();
 };
